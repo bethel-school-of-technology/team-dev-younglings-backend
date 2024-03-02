@@ -11,6 +11,6 @@ app.use(express.urlencoded({extended:true})); // this allows express to parse ur
 
 db.sync().then(() => {
     console.info('connected to the canine adoption database!')
-})
+}) //creating a connection with the database mentioned in index.ts
 
 app.listen(3000);

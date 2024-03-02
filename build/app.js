@@ -12,5 +12,5 @@ app.use(express_1.default.json()); // this line allows express to recieve and un
 app.use(express_1.default.urlencoded({ extended: true })); // this allows express to parse url encoded payloads
 models_1.db.sync().then(() => {
     console.info('connected to the canine adoption database!');
-});
+}); //creating a connection with the database mentioned in index.ts
 app.listen(3000);
