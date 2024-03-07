@@ -12,12 +12,6 @@ export const getAllUsers: RequestHandler = async (req, res, next) => {
 export const registerUser: RequestHandler = async (req, res, next) => {
     let regUser: User = req.body;
 
-    let foundUser: User[] = await User.findAll({
-        where: {
-            username: regUser.username
-        }
-    })
-
     try{
 
             if(regUser.username && regUser.password) {
