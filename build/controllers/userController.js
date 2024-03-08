@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.registerUser = exports.getAllUsers = void 0;
+exports.getUser = exports.loginUser = exports.registerUser = exports.getAllUsers = void 0;
 const user_1 = require("../models/user");
 const auth_1 = require("../services/auth");
 const getAllUsers = async (req, res, next) => {
@@ -10,22 +10,32 @@ const getAllUsers = async (req, res, next) => {
 exports.getAllUsers = getAllUsers;
 const registerUser = async (req, res, next) => {
     let regUser = req.body;
-    try {
-        if (regUser.username && regUser.password) {
-            let encryptedPass = await (0, auth_1.hashedPassword)(regUser.password);
-            regUser.password = encryptedPass;
-            let createdUser = await user_1.User.create(regUser);
-            res.status(201).json({
-                userId: createdUser.userId,
-                password: createdUser.password
-            });
+    let foundUser = await user_1.User.findOne({
+        where: {
+            username: regUser.username
         }
-        else {
-            res.status(400).send('Please enter the username & pasword');
+    });
+    if (!foundUser) {
+        try {
+            if (regUser.username && regUser.password) {
+                let encryptedPass = await (0, auth_1.hashedPassword)(regUser.password);
+                regUser.password = encryptedPass;
+                let createdUser = await user_1.User.create(regUser);
+                res.status(201).json({
+                    userId: createdUser.userId,
+                    password: createdUser.password
+                });
+            }
+            else {
+                res.status(400).send('Please enter the username & pasword');
+            }
+        }
+        catch (error) {
+            res.status(400).send(error);
         }
     }
-    catch (error) {
-        res.status(400).send(error);
+    else {
+        res.status(401).send('Username is already being used');
     }
 };
 exports.registerUser = registerUser;
@@ -51,3 +61,15 @@ const loginUser = async (req, res, next) => {
     }
 };
 exports.loginUser = loginUser;
+const getUser = async (req, res, next) => {
+    let user = await (0, auth_1.verifyUser)(req);
+    let reqId = parseInt(req.params.id);
+    if (user) {
+        let idedUser = await user_1.User.findByPk(reqId);
+        res.status(200).json({ idedUser });
+    }
+    else {
+        res.status(401).send();
+    }
+};
+exports.getUser = getUser;

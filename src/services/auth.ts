@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { User } from '../models/user';
+import { Request } from 'express';
 
 export const hashedPassword = async (inputtedText: string) => {
     const saltRound = 12;
@@ -21,4 +22,26 @@ export const tokenAssigner = async (user:User) => {
     )
 
     return token;
+}
+
+export const verifyUser = async (req: Request) => {
+
+    const authHeader = req.headers.authorization;
+
+    if (authHeader){
+        const token = authHeader.split(' ')[1];
+
+        try{
+            let decodedUserId: any = await jwt.verify(token, secret);
+            return User.findByPk(decodedUserId.userId)
+        }
+        catch(err){
+            return null
+        }
+
+    }
+    else{
+        return null;
+    }
+
 }
