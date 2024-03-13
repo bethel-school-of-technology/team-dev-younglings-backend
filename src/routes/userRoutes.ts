@@ -10,4 +10,6 @@ router.get('/:id', getUser);
 router.post('/register', registerUser);
 router.post('/login', loginUser)
 
+router.put('/:id');
+
 export default router
