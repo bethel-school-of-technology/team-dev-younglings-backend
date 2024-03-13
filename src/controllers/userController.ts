@@ -104,6 +104,8 @@ export const editUserInformation: RequestHandler = async (req, res, next) => {
                     userId: reqId
                 }
             })
+
+            res.status(200).json({userUpdatedInfo});
         }
         else{
             res.status(401).send("cannot edit another users page")

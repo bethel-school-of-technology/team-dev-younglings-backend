@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.loginUser = exports.registerUser = exports.getAllUsers = void 0;
+exports.editUserInformation = exports.getUser = exports.loginUser = exports.registerUser = exports.getAllUsers = void 0;
 const user_1 = require("../models/user");
 const auth_1 = require("../services/auth");
 const getAllUsers = async (req, res, next) => {
@@ -73,3 +73,30 @@ const getUser = async (req, res, next) => {
     }
 };
 exports.getUser = getUser;
+const editUserInformation = async (req, res, next) => {
+    let user = await (0, auth_1.verifyUser)(req);
+    let reqId = parseInt(req.params.id);
+    if (!user) {
+        return res.status(401).send("please sign in if you want to edit user information");
+    }
+    let userUpdatedInfo = req.body;
+    let idedUser = await user_1.User.findByPk(reqId);
+    if (idedUser) {
+        if (idedUser.username === user.username) {
+            await user_1.User.update(userUpdatedInfo, {
+                where: {
+                    userId: reqId
+                }
+            });
+            res.status(200).json({ userUpdatedInfo });
+        }
+        else {
+            res.status(401).send("cannot edit another users page");
+        }
+    }
+    else {
+        res.status(400).send("user is non-existent");
+    }
+};
+exports.editUserInformation = editUserInformation;
+//delete user function
