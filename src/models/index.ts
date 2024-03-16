@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import { UserFactory } from "./user";
+import { DogFactory, UserDogConnection } from "./listing";
 
 const dbName = 'dogAdoptionDb'; // name of the database, this needs to be created before database can be connected
 const username = 'root'; // the username to access the local mysql 
@@ -12,5 +13,7 @@ const sequelize = new Sequelize(dbName, username, password, {
 });
 
 UserFactory(sequelize);
+DogFactory(sequelize);
+UserDogConnection();
 
 export const db = sequelize
