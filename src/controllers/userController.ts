@@ -115,4 +115,28 @@ export const editUserInformation: RequestHandler = async (req, res, next) => {
     }
 }
 
-//delete user function
+export const deleteUser: RequestHandler = async (req,res, next) => {
+    let user: User | null = await verifyUser(req);
+    let reqId = parseInt(req.params.id);
+
+    if(!user){
+        return res.status(401).send("please sign in if you want to edit user information")
+    }
+
+    let idedUser: User | null = await User.findByPk(reqId);
+
+    if( idedUser && idedUser.username === user.username){
+
+        await User.destroy({
+            where: {
+                userId: reqId
+            }
+        })
+
+        res.status(200).json({});
+    }
+    else{
+        res.status(401).send("cannot delete another users page")
+    }
+
+}

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editUserInformation = exports.getUser = exports.loginUser = exports.registerUser = exports.getAllUsers = void 0;
+exports.deleteUser = exports.editUserInformation = exports.getUser = exports.loginUser = exports.registerUser = exports.getAllUsers = void 0;
 const user_1 = require("../models/user");
 const auth_1 = require("../services/auth");
 const getAllUsers = async (req, res, next) => {
@@ -99,4 +99,23 @@ const editUserInformation = async (req, res, next) => {
     }
 };
 exports.editUserInformation = editUserInformation;
-//delete user function
+const deleteUser = async (req, res, next) => {
+    let user = await (0, auth_1.verifyUser)(req);
+    let reqId = parseInt(req.params.id);
+    if (!user) {
+        return res.status(401).send("please sign in if you want to edit user information");
+    }
+    let idedUser = await user_1.User.findByPk(reqId);
+    if (idedUser && idedUser.username === user.username) {
+        await user_1.User.destroy({
+            where: {
+                userId: reqId
+            }
+        });
+        res.status(200).json({});
+    }
+    else {
+        res.status(401).send("cannot delete another users page");
+    }
+};
+exports.deleteUser = deleteUser;
