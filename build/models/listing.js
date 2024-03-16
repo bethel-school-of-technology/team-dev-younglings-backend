@@ -37,7 +37,8 @@ function DogFactory(sequelize) {
         },
         allergies: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false
+            allowNull: true,
+            defaultValue: "none"
         },
         disability: {
             type: sequelize_1.DataTypes.BOOLEAN,
