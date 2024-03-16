@@ -1,15 +1,16 @@
 import { DataTypes, InferAttributes, InferCreationAttributes, Model, Sequelize } from "sequelize";
+import { User } from "./user";
 
 export class DogListing extends Model<InferAttributes<DogListing>, InferCreationAttributes<DogListing>> {
     declare dogId: number;
+    declare age: number;
+    declare price: number;
+    declare userId: number
     declare name: string;
     declare breed: string;
-    declare age: number;
-    declare allergies?: string; //maybe this should be done in the format of add button, where you can add more and more allergies, if there 
+    declare allergies: string; 
     declare disability: boolean;
-    declare price: number;
-
-    declare createAt?: Date;
+    declare createdAt?: Date;
     declare updatedAt?: Date;
 }
 
@@ -24,6 +25,18 @@ export function DogFactory (sequelize: Sequelize){
             unique: true,
             allowNull: false
         },
+        age:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        price:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -32,23 +45,15 @@ export function DogFactory (sequelize: Sequelize){
             type: DataTypes.STRING,
             allowNull: false
         },
-        age:{
-            type: DataTypes.NUMBER,
-            allowNull: false
-        },
         allergies:{
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false
         },
         disability: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },
-        price:{
-            type: DataTypes.NUMBER,
-            allowNull: false
-        },
-        createAt:{
+        createdAt:{
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
@@ -62,4 +67,9 @@ export function DogFactory (sequelize: Sequelize){
         freezeTableName: true,
         sequelize
     })
+}
+
+export function UserDogConnection (){
+    User.hasMany(DogListing, {foreignKey: 'userId'});
+    DogListing.belongsTo(User, {foreignKey: 'userId'});
 }
