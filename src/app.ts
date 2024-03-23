@@ -8,6 +8,12 @@ const app = express(); //creating an instance of the express application in a va
 
 app.use(morgan('dev')); // morgan package which helps with logging http requests
 
+const cors = require('cors');
+const corsOptions = {
+    origin: [ 'http://localhost:4200']
+};
+app.use(cors(corsOptions));
+
 app.use(express.json()); // this line allows express to recieve and understand JSON data
 app.use(express.urlencoded({extended:true})); // this allows express to parse url encoded payloads
 
