@@ -11,6 +11,9 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     declare username: string;
     declare password: string;
     declare email: string;
+    declare country: string; 
+    declare state: string; 
+    declare province: string;
 
     declare createdAt?: Date;
     declare updatedAt?: Date;
@@ -47,6 +50,18 @@ export function UserFactory (sequelize: Sequelize) {
             allowNull: false
         },
         email: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        state: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        country: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        province: {
             type: DataTypes.STRING,
             allowNull: false
         },
