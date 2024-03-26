@@ -108,3 +108,40 @@ export const deleteDogListing: RequestHandler = async (req, res, next) => {
 
 
 }
+
+export const findByBreed: RequestHandler = async (req, res, next) => {
+    let breedParams = req.params.breed
+
+    let breedDogs: DogListing[] | [] = await DogListing.findAll({
+        where:{
+            breed: breedParams
+        }
+    })
+
+    res.status(200).json(breedDogs);
+}
+
+// export const findByLocation: RequestHandler = async (req, res, next) => {
+//     let user: User | null = await verifyUser(req);
+
+//     if(!user){
+//         return res.status(401).send('please sign in to find by location')
+//     }
+
+//     let paramsLocation = req.params.location;
+//     let closeUsers: User[] | [] = await User.findAll({
+//         where: {
+//             state: paramsLocation
+//         }
+//     })
+
+//     let closeDogs: DogListing[][] = await Promise.all(closeUsers.flatMap(async (usr) => {
+//         return await DogListing.findAll({
+//             where: {
+//                 userId: usr.userId
+//             }
+//         });
+//     }));
+     
+
+// }
