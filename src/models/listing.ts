@@ -10,6 +10,9 @@ export class DogListing extends Model<InferAttributes<DogListing>, InferCreation
     declare breed: string;
     declare allergies: string; 
     declare disability: boolean;
+    declare image: string;
+    declare gender: string;
+
     declare createdAt?: Date;
     declare updatedAt?: Date;
 }
@@ -53,6 +56,14 @@ export function DogFactory (sequelize: Sequelize){
         disability: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+        },
+        gender: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         createdAt:{
             type: DataTypes.DATE,
