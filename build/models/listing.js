@@ -44,6 +44,14 @@ function DogFactory(sequelize) {
             type: sequelize_1.DataTypes.BOOLEAN,
             allowNull: false,
         },
+        gender: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false
+        },
+        image: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false
+        },
         createdAt: {
             type: sequelize_1.DataTypes.DATE,
             defaultValue: sequelize_1.DataTypes.NOW
